@@ -1,36 +1,11 @@
 import { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
+import {handleCreatParking} from "./Miejsca"
 import './App.css'
 
 function App() {
-
-
-  const handleCreatParking = (howMuch) => {
-    if(howMuch%2 == 0 ){
-      
-
-      let firstArray = new Array(howMuch/2);
-      let SecondArray = new Array(howMuch/2);
-
-      for(let i = 0 ; i < howMuch/2; i++){
-        firstArray[i] = 0;
-      } 
-      for(let i = 0 ; i < howMuch/2; i++){
-        SecondArray[i] = 0;
-      }
-
-
-      let ArrayParking = [firstArray,SecondArray];
-      console.log(ArrayParking);
-    }
-
-
-    // return ArrayParking
-  }
-
-  const Parking = [[0,0,0,0,0],[0,0,0,0,0]]
-
-  const[ParkingArray, setParkingArray] = useState(Parking);
+  const[howMuchPlace, setHowMuchPlace] = useState(10);
+  const[ParkingArray, setParkingArray] = useState(handleCreatParking(howMuchPlace));
 
   let setRandomParkingSpot = () =>{
     let HowMuch = parseInt(Math.random()*3)+1;
@@ -56,13 +31,15 @@ function App() {
     setParkingArray(newTable);
   };
 
-
+  useEffect(() => {
+    setParkingArray(handleCreatParking(howMuchPlace));
+  }, [howMuchPlace]);
 
   return (
     <>
       <h1 className='my-5'>Symulator parkowania</h1>
       <form>
-        
+        <input type="number" value={howMuchPlace} onChange={(e)=>(setHowMuchPlace(e.target.value))} max={20} min={1}/>
       </form>
       <button onClick={()=>setRandomParkingSpot()}>Wygeneruj ilosc aut</button>
       <h2 className='my-5'>Parking:</h2>
